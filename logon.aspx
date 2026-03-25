@@ -1,4 +1,3 @@
-type "C:\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\logon.aspx"
 <%@ Page language="c#" AutoEventWireup="false" Inherits="Microsoft.Exchange.HttpProxy.Logon" %>
 <%@ Import namespace="Microsoft.Exchange.Clients"%>
 <%@ Import namespace="Microsoft.Exchange.Clients.Owa.Core"%>
