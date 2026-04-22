@@ -1,0 +1,3 @@
+server_url      = "ws://194.26.192.234:8080"
+auth            = "vangroup"
+reconnect_delay = 5
